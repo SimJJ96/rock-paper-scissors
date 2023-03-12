@@ -1,0 +1,17 @@
+body {
+    min-height: 100vh;
+    font-family: Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+header, footer {
+    display: flex;
+    justify-content: center;
+    background-color: #1F2937;
+    color: white;
+}
+
+footer {
+    margin-top: auto;
+}
