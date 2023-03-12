@@ -22,11 +22,11 @@ function roundOutcome(playerSelection, computerSelection) {
 
 function printMessage(outCome, playerSelection, computerSelection) {
     if (outCome === 1) {
-        console.log("You Win! " + playerSelection + " beats " + computerSelection);
+        return ("You Win! " + playerSelection + " beats " + computerSelection);
     } else if (outCome === 0) {
-        console.log("You Lose! " + playerSelection + " defeated by " + computerSelection);
+        return ("You Lose! " + playerSelection + " defeated by " + computerSelection);
     } else {
-        console.log("Draw ! " + playerSelection + " Drawed with " + computerSelection);
+        return ("Draw ! " + playerSelection + " Drawed with " + computerSelection);
     }
     return;
 }
@@ -40,30 +40,58 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function getPlayerChoice() {
+    
     return prompt("Please choose a type: rock, paper or scissor");
 }
 
 function game() {
-    let playerWinCount = 0;
-    let computerWinCount = 0;
+    let playerHealthPoint = 5;
+    let computerHealthPoint = 5;
     let outCome;
 
-    for (let i=0; i<5; i++) {
-        let playerSelection = getPlayerChoice();
-        let computerSelection = getComputerChoice();
-        outCome = playRound(playerSelection, computerSelection);
-        if (outCome === 1) {
-            playerWinCount++;
-        } else if (outCome === 0) {
-            computerWinCount++;
-        }
-    }
+    const playerHp = document.querySelector('#player-hp')
+    const computerHp = document.querySelector('#computer-hp')
 
-    if (playerWinCount > computerWinCount) {
-        return "Player Wins!";
-    } else if (computerWinCount > playerWinCount) {
-        return "Computer Wins!";
-    } else {
-        return "Draw!"
-    }
+    const options = document.querySelectorAll('.option');
+    const gameContent = document.querySelector('#game-content');
+
+    const gameOver = document.createElement('h1');
+
+    options.forEach(option => option.addEventListener('click', function(e) {
+
+        let computerChoice = getComputerChoice();
+        let playerChoice = e.target.value;
+
+        outCome = playRound(playerChoice, computerChoice);
+        let message = printMessage(outCome, playerChoice, computerChoice);
+
+        if (outCome === 1) {
+            computerHealthPoint--;
+            computerHp.textContent = "Computer HP: " + computerHealthPoint;
+        } else if (outCome === 0) {
+            playerHealthPoint--;
+            playerHp.textContent = "Your HP: " + playerHealthPoint;
+        }
+        const result = document.createElement('div');
+        result.classList.add('result');
+        result.textContent = message;
+        gameContent.appendChild(result);
+
+        if (computerHealthPoint === 0) {
+            gameOver.textContent = "You Win! You have slain the dragon!" 
+            gameContent.appendChild(gameOver);
+            return;
+        } else if (playerHealthPoint === 0) {
+            gameOver.textContent = "You Lose! you have been slain!"
+            gameContent.appendChild(gameOver);
+            return;
+        }
+
+    }));
 }
+
+game();
+
+
+
+
